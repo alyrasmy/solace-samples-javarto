@@ -4,3 +4,10 @@ hs_err_pid*
 _site
 .DS_Store
 docs/_site
+/.gradle/
+bin/
+solclientj*
+.classpath
+.settings/
+.project
+build/
