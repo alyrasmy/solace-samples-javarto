@@ -11,3 +11,4 @@ solclientj*
 .settings/
 .project
 build/
+.idea
