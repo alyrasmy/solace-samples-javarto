@@ -2,12 +2,10 @@
 layout: tutorials
 title: Publish/Subscribe
 summary: Learn how to set up pub/sub messaging on a Solace VMR.
-icon: publish-subscribe.png
+icon: I_dev_P+S.svg
 ---
 
 This tutorial will introduce you to the fundamentals of the Solace JavaRTO API by connecting a client, adding a topic subscription and sending a message matching this topic subscription. This forms the basis for any publish / subscribe message exchange illustrated here:
-
-![]({{ site.baseurl }}/images/publish-subscribe.png)
 
 ## Assumptions
 
@@ -68,7 +66,7 @@ For the purposes of this tutorial, you will connect to the default message VPN o
 
 This tutorial depends on you having the Solace Messaging API for Java Real-Time Optimized (JavaRTO). The JavaRTO API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The JavaRTO API is distributed as a tar file containing the required jars and libs, API documentation, and examples. The instructions in the [Building](#building) section assume you're using Gradle and using the JavaRTO API for Linux x86_64 platform. If your environment or target runtime platform differs, then download the appropriate JavaRTO API and adjust the build instructions appropriately.
 
-**NOTE**: The Solace JavaRTO API (a.k.a solclientj) is a low-latency Java Native Interface (JNI) wrapper for the Solace C Messaging API (SolClient). Therefore, during compile time the JNI wrapper jar `solclient.jar` must be added a dependency and C API library packaged with the JavaRTO API must be included in your runtime library path. 
+**NOTE**: The Solace JavaRTO API (a.k.a solclientj) is a low-latency Java Native Interface (JNI) wrapper for the Solace C Messaging API (SolClient). Therefore, during compile time the JNI wrapper jar `solclient.jar` must be added a dependency and C API library packaged with the JavaRTO API must be included in your runtime library path.
 
 ### Compile Dependency: Using Gradle
 
@@ -143,7 +141,7 @@ Solclient.createContextForHandle(contextHandle, new String[0]);
 
 The JavaRTO API is predominantly an asynchronous API designed for the highest speed and lowest latency. As such most events and notifications occur through callbacks. In order to get up and running, the following basic callbacks are required at a minimum.
 
-```java 
+```java
 final CountDownLatch latch = new CountDownLatch(1);
 
 // A message callback to receive messages asynchronously
@@ -154,13 +152,13 @@ MessageCallback messageCallback = new MessageCallback() {
             // Get the received msg from the handle
             MessageSupport messageSupport = (MessageSupport) handle;
             MessageHandle rxMessage = messageSupport.getRxMessage();
-            
+
             // Process the message ...
-            
+
             // To display the contents of a message in human-readable form
             System.out.println(" Received message: ");
             rxMessage.dump(SolEnum.MessageDumpMode.FULL);
-            
+
         } catch (SolclientException e) {
             // Handle exception
         } finally {
@@ -308,8 +306,8 @@ Before you can run the sample, you must set the appropriate library paths for yo
 
 First, include the lib directory of the unpacked `solclientj` in your `LD_LIBRARY_PATH`:
 ```
-export LD_LIBRARY_PATH=`pwd`/solclientj/lib:$LD_LIBRARY_PATH 
-``` 
+export LD_LIBRARY_PATH=`pwd`/solclientj/lib:$LD_LIBRARY_PATH
+```
 
 If you start the `TopicSubscriber` with a single argument for the Solace message router host address it will connect and wait for a message.
 
@@ -344,7 +342,7 @@ With the message delivered the subscriber output will look like the following:
 
 ```
  Received a message with content: Hello world!
- Complete message dump: 
+ Complete message dump:
 Destination:                            Topic 'tutorial/topic'
 Class Of Service:                       COS_1
 DeliveryMode:                           DIRECT
