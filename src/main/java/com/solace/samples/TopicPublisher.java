@@ -43,10 +43,32 @@ public class TopicPublisher {
      */
     public static void main(String[] args) throws SolclientException {
         // Check command line arguments
-        if (args.length < 1) {
-            System.out.println("Usage: TopicPublisher <msg_backbone_ip:port>");
+        if (args.length != 3) {
+            System.out.println("Usage: TopicPublisher <host:port> <client-username@message-vpn> <client-password>");
+            System.out.println();
             System.exit(-1);
         }
+        String[] userSplit = args[1].split("@");
+        if (userSplit.length != 2) {
+            System.out.println("Usage: TopicPublisher <host:port> <client-username@message-vpn> <client-password>");
+            System.out.println();
+            System.exit(-1);
+        }
+        if (userSplit[0].isEmpty()) {
+            System.out.println("No client-username entered");
+            System.out.println();
+            System.exit(-1);
+        }
+        if (userSplit[1].isEmpty()) {
+            System.out.println("No message-vpn entered");
+            System.out.println();
+            System.exit(-1);
+        }
+
+        String host = args[0];
+        String username = userSplit[0];
+        String vpnName = userSplit[1];
+        String password = args[2];
         System.out.println("TopicPublisher initializing...");
 
         // Initialize the API first
@@ -65,12 +87,13 @@ public class TopicPublisher {
         // [Session] -> create the session properties
         ArrayList<String> sessionProperties = new ArrayList<String>();
         sessionProperties.add(SessionHandle.PROPERTIES.HOST);
-        sessionProperties.add("192.168.56.101");
+        sessionProperties.add(host);
         sessionProperties.add(SessionHandle.PROPERTIES.USERNAME);
-        sessionProperties.add("default");
+        sessionProperties.add(username);
+        sessionProperties.add(SessionHandle.PROPERTIES.PASSWORD);
+        sessionProperties.add(password);
         sessionProperties.add(SessionHandle.PROPERTIES.VPN_NAME);
-        sessionProperties.add("default");
-        // Convert the ArrayList to a string array
+        sessionProperties.add(vpnName);
         String[] props = new String[sessionProperties.size()];
 
         // [Session] -> define a message callback

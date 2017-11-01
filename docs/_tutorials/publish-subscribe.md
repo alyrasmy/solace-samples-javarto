@@ -1,24 +1,32 @@
 ---
 layout: tutorials
 title: Publish/Subscribe
-summary: Learn how to set up pub/sub messaging on a Solace VMR.
+summary: Learn to publish and subscribe to messages.
 icon: I_dev_P+S.svg
+links:
+    - label: TopicPublisher.java
+      link: /blob/master/src/main/java/com/solace/samples/TopicPublisher.java
+    - label: TopicSubscriber.java
+      link: /blob/master/src/main/java/com/solace/samples/TopicSubscriber.java
+
 ---
 
-This tutorial will introduce you to the fundamentals of the Solace JavaRTO API by connecting a client, adding a topic subscription and sending a message matching this topic subscription. This forms the basis for any publish / subscribe message exchange illustrated here:
+This tutorial will introduce you to the fundamentals of the Solace API by connecting a client, adding a topic subscription and sending a message matching this topic subscription. This forms the basis for any publish / subscribe message exchange.
 
 ## Assumptions
 
 This tutorial assumes the following:
 
 *   You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-*   You have access to a running Solace message router with the following configuration:
-    *   Enabled message VPN
-    *   Enabled client username
+*   You have access to Solace messaging with the following configuration details:
+    *   Connectivity information for a Solace message-VPN
+    *   Enabled client username and password
 
-One simple way to get access to a Solace message router is to start a Solace VMR load [as outlined here]({{ site.docs-vmr-setup }}){:target="_top"}. By default the Solace VMR will run with the “default” message VPN configured and ready for messaging. Going forward, this tutorial assumes that you are using the Solace VMR. If you are using a different Solace message router configuration, adapt the instructions to match your configuration.
-
-The build instructions in this tutorial assume you are using a Linux shell. If your environment differs, adapt the instructions.
+{% if jekyll.environment == 'solaceCloud' %}
+One simple way to get access to Solace messaging quickly is to create a messaging service in Solace Cloud [as outlined here]({{ site.links-solaceCloud-setup}}){:target="_top"}. You can find other ways to get access to Solace messaging on the [home page]({{ site.baseurl }}/) of these tutorials.
+{% else %}
+One simple way to get access to a Solace message router is to start a Solace VMR load [as outlined here]({{ site.docs-vmr-setup }}){:target="_top"}. By default the Solace VMR will with the “default” message VPN configured and ready for guaranteed messaging. Going forward, this tutorial assumes that you are using the Solace VMR. If you are using a different Solace message router configuration adapt the tutorial appropriately to match your configuration.
+{% endif %}
 
 ## Goals
 
@@ -27,84 +35,12 @@ The goal of this tutorial is to demonstrate the most basic messaging interaction
 1.  How to build and send a message on a topic
 2.  How to subscribe to a topic and receive a message
 
-## Solace message router properties
-
-In order to send or receive messages to a Solace message router, you need to know a few details of how to connect to the Solace message router. Specifically you need to know the following:
-
-
-<table>
-  <tr>
-    <th>Resource</th>
-    <th>Value</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>Host</td>
-    <td>String of the form <code>DNS name</code> or <code>IP:Port</code></td>
-    <td>This is the address clients use when connecting to the Solace message router to send and receive messages. For a Solace VMR this there is only a single interface so the IP is the same as the management IP address. For Solace message router appliances this is the host address of the message-backbone.</td>
-  </tr>
-  <tr>
-    <td>Message VPN</td>
-    <td>String</td>
-    <td>The Solace message router Message VPN that this client should connect to. The simplest option is to use the “default” message-vpn which is present on all Solace message routers and fully enabled for message traffic on Solace VMRs.</td>
-  </tr>
-  <tr>
-    <td>Client Username</td>
-    <td>String</td>
-    <td>The client username. For the Solace VMR default message VPN, authentication is disabled by default, so this can be any value.</td>
-  </tr>
-  <tr>
-    <td>Client Password</td>
-    <td>String</td>
-    <td>The optional client password. For the Solace VMR default message VPN, authentication is disabled by default, so this can be any value or omitted.</td>
-  </tr>
-</table>
-
-For the purposes of this tutorial, you will connect to the default message VPN of a Solace VMR so the only required information to proceed is the Solace VMR host string which this tutorial accepts as an argument.
-
-## Obtaining the Solace API
-
-This tutorial depends on you having the Solace Messaging API for Java Real-Time Optimized (JavaRTO). The JavaRTO API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The JavaRTO API is distributed as a tar file containing the required jars and libs, API documentation, and examples. The instructions in the [Building](#building) section assume you're using Gradle and using the JavaRTO API for Linux x86_64 platform. If your environment or target runtime platform differs, then download the appropriate JavaRTO API and adjust the build instructions appropriately.
-
-**NOTE**: The Solace JavaRTO API (a.k.a solclientj) is a low-latency Java Native Interface (JNI) wrapper for the Solace C Messaging API (SolClient). Therefore, during compile time the JNI wrapper jar `solclient.jar` must be added a dependency and C API library packaged with the JavaRTO API must be included in your runtime library path.
-
-### Compile Dependency: Using Gradle
-
-```groovy
-repositories {
-    flatDir(dir: "<PATH_TO_EXTRACTED_API>/solclientj/lib", name: 'Java RTO API lib directory')
-}
-
-dependencies {
-    // Solace Messaging API for JavaRTO Dependencies
-    compile("com.solacesystems:solclientj:")
-}
-```
-
-### Compile Dependency: Using Maven
-
-```xml
-<repositories>
-  <repository>
-    <id>localrepository</id>
-    <url>file://<PATH_TO_EXTRACTED_API>/solclientj/lib/</url>
-  </repository>
-</repositories>
-
-[...]
-
-<dependency>
-  <groupId>com.solacesystems</groupId>
-  <artifactId>solclientj</artifactId>
-  <version>+</version>
-</dependency>
-```
-
-## Trying it yourself
-
-This tutorial is available in [GitHub]({{ site.repository }}){:target="_blank"} along with the other [Solace Developer Getting Started Examples]({{ site.links-get-started }}){:target="_top"}.
-
-At the end, this tutorial walks through downloading and running the sample from source.
+{% if jekyll.environment == 'solaceCloud' %}
+  {% include solaceMessaging-cloud.md %}
+{% else %}
+    {% include solaceMessaging.md %}
+{% endif %}  
+{% include solaceApi.md %}
 
 ## Connecting to the Solace message router
 
@@ -188,11 +124,13 @@ Finally a session is needed to actually connect to the Solace message router. Th
 // Configure the Session properties
 ArrayList<String> sessionProperties = new ArrayList<String>();
 sessionProperties.add(SessionHandle.PROPERTIES.HOST);
-sessionProperties.add(args[0]);
+sessionProperties.add(host);
 sessionProperties.add(SessionHandle.PROPERTIES.USERNAME);
-sessionProperties.add("default");
+sessionProperties.add(username);
+sessionProperties.add(SessionHandle.PROPERTIES.PASSWORD);
+sessionProperties.add(password);
 sessionProperties.add(SessionHandle.PROPERTIES.VPN_NAME);
-sessionProperties.add("default");
+sessionProperties.add(vpnName);
 String[] props = new String[sessionProperties.size()];
 
 // Instantiate a new SessionHandle instance
@@ -278,12 +216,15 @@ At this point the producer has sent a message to the Solace message router and y
 
 The full source code for this example is available in [GitHub]({{ site.repository }}){:target="_blank"}. If you combine the example source code shown above results in the following source:
 
-*   [TopicPublisher.java]({{ site.repository }}/blob/master/src/main/java/com/solace/samples/TopicPublisher.java){:target="_blank"}
-*   [TopicSubscriber.java]({{ site.repository }}/blob/master/src/main/java/com/solace/samples/TopicSubscriber.java){:target="_blank"}
+<ul>
+{% for item in page.links %}
+<li><a href="{{ site.repository }}{{ item.link }}" target="_blank">{{ item.label }}</a></li>
+{% endfor %}
+</ul>
 
 ### Getting the Source
 
-Clone the GitHub repository containing the Solace samples.
+This tutorial is available in GitHub.  To get started, clone the GitHub repository containing the Solace samples.
 
 ```
 git clone {{ site.repository }}
@@ -309,10 +250,10 @@ First, include the lib directory of the unpacked `solclientj` in your `LD_LIBRAR
 export LD_LIBRARY_PATH=`pwd`/solclientj/lib:$LD_LIBRARY_PATH
 ```
 
-If you start the `TopicSubscriber` with a single argument for the Solace message router host address it will connect and wait for a message.
+If you start the `TopicSubscriber`, with the required arguments of your Solace messaging, it will connect and wait for a message.
 
 ```
-$ ./build/staged/bin/TopicSubscriber <HOST>
+$ ./build/staged/bin/TopicSubscriber <host:port> <client-username>@<message-vpn> <client-password>
 TopicSubscriber initializing...
  Initializing the Java RTO Messaging API...
  Creating a context ...
@@ -323,10 +264,10 @@ TopicSubscriber initializing...
  Subscribed. Awaiting message...
 ```
 
-Then you can send a message using the `TopicPublisher` again using a single argument to specify the Solace message router host address. If successful, the output for the producer will look like the following:
+Then you can send a message using the `TopicPublisher` with the same arguments. If successful, the output for the producer will look like the following:
 
 ```
-$ ./build/staged/bin/topicPublisher <HOST>
+$ ./build/staged/bin/topicPublisher <host:port> <client-username>@<message-vpn> <client-password>
 TopicPublisher initializing...
  Initializing the Java RTO Messaging API...
  Creating a context ...
