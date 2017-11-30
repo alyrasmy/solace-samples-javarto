@@ -8,6 +8,11 @@ repository: https://github.com/SolaceSamples/solace-samples-javarto
 
 # Links
 docs-vmr-setup: http://docs.solace.com/Solace-VMR-Set-Up/Setting-Up-VMRs.htm
+links-downloads: http://dev.solace.com/downloads/
+links-community: http://dev.solace.com/community/
+links-get-started: http://dev.solace.com/get-started/dotnet-tutorials/
+links-solaceCloud-setup: http://cloud.solace.com/create-messaging-service/
+docs-javarto-api: https://docs.solace.com/API-Developer-Online-Ref-Documentation/jrto/index.html
 solace-apis-dev:
   - value: http://dev.solace.com/get-started/c-tutorials/
     name: C

@@ -114,7 +114,7 @@ SessionEventCallback sessionEventCallback = new SessionEventCallback() {
 
 The `messageCallback` is invoked for each Direct message received by the Session. In this sample, the message is printed to the screen. For the purpose of this tutorial a countdown latch is used to block the consumer thread until a single message has been received.
 
-The `sessionEventCallback` is invoked for various significant session events like connection, disconnection, and other API session events. In this sample, simply prints the events. See the [JavaRTO API documentation]({{ site.docs-api-ref }}){:target="_top"} and samples for details on the session events.
+The `sessionEventCallback` is invoked for various significant session events like connection, disconnection, and other API session events. In this sample, simply prints the events. See the [JavaRTO API documentation]({{ site.docs-javarto-api }}){:target="_top"} and samples for details on the session events.
 
 ### Session Creation
 
