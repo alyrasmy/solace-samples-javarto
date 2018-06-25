@@ -1,0 +1,14 @@
+# Site settings
+title: Solace Samples JavaRTO
+summary: These tutorials get you up to speed sending and receiving messages with Solace technology.
+baseurl: "/solace-samples-javarto"
+repository: https://github.com/SolaceSamples/solace-samples-javarto
+
+# Also see _includes/intro.html to customize the description which gets included in index.html.
+
+# Links
+links-downloads: //dev.solace.com/downloads/
+links-community: //dev.solace.com/community/
+links-get-started: //dev.solace.com/get-started/dotnet-tutorials/
+links-solaceCloud-setup: //cloud.solace.com/create-messaging-service/
+docs-javarto-api: //docs.solace.com/API-Developer-Online-Ref-Documentation/jrto/index.html
