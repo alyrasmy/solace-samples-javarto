@@ -12,11 +12,11 @@ The "Getting Started" tutorials will get you up to speed and sending messages wi
 
 ## Contents
 
-This repository contains code and matching tutorial walk-through for five different basic Solace messaging patterns. For a nice introduction to the Solace API and associated tutorials, check out the [tutorials home page](https://solacesamples.github.io/solace-samples-javarto/).
+This repository contains code and matching tutorial walk-through for five different basic Solace messaging patterns. For a nice introduction to the Solace API and associated tutorials, check out the [tutorials home page](https://dev.solace.com/samples/solace-samples-javarto/).
 
 See the individual tutorials for details:
 
-- [Publish/Subscribe](https://solacesamples.github.io/solace-samples-javarto/publish-subscribe): Learn how to set up pub/sub messaging on a Solace VMR.
+- [Publish/Subscribe](https://dev.solace.com/samples/solace-samples-javarto/publish-subscribe): Learn how to set up pub/sub messaging on a Solace VMR.
 - TODO - Persistence: Learn how to set up persistence for guaranteed delivery.
 - TODO - Request/Reply: Learn how to set up request/reply messaging.
 - TODO - Confirmed Delivery: Learn how to confirm that your messages are received by a Solace message router.
